@@ -1,6 +1,6 @@
 #include "ethzasl_gridmap_2d/grid-map.h"
 #include "ethzasl_gridmap_2d/grid-functors.h"
-#include "ros/time.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <algorithm>

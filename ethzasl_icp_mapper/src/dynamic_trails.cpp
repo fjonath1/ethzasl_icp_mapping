@@ -478,14 +478,14 @@ void DynamicTrails::processCloud(DP inputPointCloud, const TP TScannerToMap)
 
 	if(currentTrailPtCount > 0)
 	{
-		//if(trailPointCloud == false)
-		//{
-		//	trailPointCloud.reset(new DP(currenttTrails));
-		//}
-		//else
-		//{
-		//	trailPointCloud->concatenate(currenttTrails);
-		//}
+		if(trailPointCloud == nullptr)
+		{
+			trailPointCloud.reset(new DP(currenttTrails));
+		}
+		else
+		{
+			trailPointCloud->concatenate(currenttTrails);
+		}
 	}
 
 	markerPub.publish(marker);

@@ -8,7 +8,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <Eigen/Eigen>
 #include "nav_msgs/OccupancyGrid.h"
-
+#include "ros/time.h"
 class GridMap
 {
 public:

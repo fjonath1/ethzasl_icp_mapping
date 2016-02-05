@@ -49,16 +49,18 @@ set(CMAKE_BUILD_TYPE RelWithDebInfo)
 #if("${CMAKE_CXX_COMPILER_ID}" MATCHES "clang") 
 #	set(CMAKE_COMPILER_IS_CLANGXX)
 #endif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "clang")
-if(CMAKE_COMPILER_IS_GNUCXX)
-	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-	if (GCC_VERSION VERSION_GREATER 4.4 OR GCC_VERSION VERSION_EQUAL 4.4)
-		add_definitions(-std=gnu++0x)
-	else (GCC_VERSION VERSION_GREATER 4.4 OR GCC_VERSION VERSION_EQUAL 4.4)
-		message(SEND_ERROR "You need GCC version 4.4 or greater to compile this library")
-	endif (GCC_VERSION VERSION_GREATER 4.4 OR GCC_VERSION VERSION_EQUAL 4.4)
-else(CMAKE_COMPILER_IS_GNUCXX)
-	message(SEND_ERROR "You need partial C++0x support for N2351, N2672, N1984. Currently this build toolchain supports only GCC >= 4.4. If your compiler supports these specifications, please send us a patch.")
-endif(CMAKE_COMPILER_IS_GNUCXX)
+
+# Enable C++11
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+        message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support, or our tests failed to detect it correctly. Please use a different C++ compiler or report this problem to the developers. You need partial C++0x support for N2351, N2672, N1984.")
+endif()
 # well, this breaks libpointmatcher on non-unix platform,
 # please contribute the define for your favorite compiler
 # It must support (compiler support in parenthesis):

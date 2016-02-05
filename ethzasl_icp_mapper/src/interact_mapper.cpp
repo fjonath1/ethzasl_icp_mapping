@@ -442,11 +442,11 @@ void InteractMapper::getBoundedMapCallback( const visualization_msgs::Interactiv
 	
 	Eigen::Affine3d eigenTr;
 	tf::transformTFToEigen(stampedTr, eigenTr);
-
-	srv.request.mapCenter.orientation.x = eigenTr.rotation().x();
-	srv.request.mapCenter.orientation.z = eigenTr.rotation().y();
-	srv.request.mapCenter.orientation.y = eigenTr.rotation().z();
-	srv.request.mapCenter.orientation.w = eigenTr.rotation().w();
+    Eigen::Quaternion<double> rotation(eigenTr.rotation());
+	srv.request.mapCenter.orientation.x = rotation.x();
+	srv.request.mapCenter.orientation.z = rotation.y();
+	srv.request.mapCenter.orientation.y = rotation.z();
+	srv.request.mapCenter.orientation.w = rotation.w();
 	srv.request.mapCenter.position.x = eigenTr.translation().x();
 	srv.request.mapCenter.position.y = eigenTr.translation().y();
 	srv.request.mapCenter.position.z = eigenTr.translation().z();
